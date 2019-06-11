@@ -1,7 +1,0 @@
-#! /bin/sh
-#
-#Prints arg1
-#Last modified bv jnrubin 10-june-2019
-
-inputname=$1
-echo my name is $inputname
