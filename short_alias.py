@@ -6,6 +6,8 @@
 # Last modified by Jonah Rubin 6/12/2019
 #
 # input: alias, cmd
+#
+# issues: selectively hangs on to arg1 between calls (rare)
 ##########################################################
 
 import sys
@@ -27,7 +29,10 @@ def write_to_bash_profile(alias,cmd):
             #if currently selected alias == input alias, overwrite
             if line.split(" ")[1].split("=")[0] == alias:
                 overwrite = True
+                sys.stdout.write('\nOverwriting previous cmd to: ')
                 line = "alias " + alias + "='" + cmd + "'\n"
+                sys.stdout.write(line + "\n")
+
         to_write.append(line)
 
     #if alias already contained
@@ -36,7 +41,9 @@ def write_to_bash_profile(alias,cmd):
             f.writelines(to_write)
     else:
         with open(os.path.expanduser('~/.bash_profile'), 'a+') as f:
-            f.write("\nalias " + alias + "='" + cmd + "'")
+            line = "alias " + alias + "='" + cmd + "'"
+            f.write("\n" + line)
+            sys.stdout.write("updated bash_profile with: " + line + "\n")
 
 
 def _main_():
@@ -45,5 +52,6 @@ def _main_():
     cmd = sys.argv[2]
 
     write_to_bash_profile(alias,cmd)
+
 
 _main_()
