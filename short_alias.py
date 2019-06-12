@@ -1,5 +1,8 @@
 #Python3 script for creating aliases inspired by jhchilds
 #Last modified by Jonah Rubin 6/12/2019
+#
+#Best use is to make a shortcut for python3 <path>/short_alias.py
+#input: alias, command
 
 import sys
 import os
