@@ -14,11 +14,8 @@ def _main_():
     #user defined alias
     alias = sys.argv[1]
     cmd = sys.argv[2]
-    if alias == "":
-        print("You did not provide an Alias")
 
-    else:
-        write_to_bash_profile(alias,cmd)
-        print("Update the bash_profile with source command")
+    write_to_bash_profile(alias,cmd)
+    print("Update the bash_profile with source command")
 
 _main_()
