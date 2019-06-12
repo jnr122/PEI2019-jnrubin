@@ -1,0 +1,28 @@
+#!/bin/tcsh
+#
+# A simple script to rename some file
+#
+# INPUT:
+#
+# year  2017,2018,etc
+# month
+# day
+#
+# Last modified fjsimons-at-princeton on 06/11/2019
+
+# Define where to look
+set directory = /data1/seismometer/
+
+# Grab the number of files in the directory (and other stuff)
+set numlines = `ls -l $directory/$1/$2/$3 | wc`
+
+# Subtract a number off there
+set subt = 2
+set newnum = `echo $numlines[1] - $subt | bc`
+
+# Report the number 
+#echo The number of files is $numlines[1] minus $subt equals $newnum
+
+# Fancy print
+printf "The number is %4.4i.\n" $newnum
+
