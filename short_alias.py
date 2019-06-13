@@ -3,18 +3,25 @@
 # Overwrites duplicates, otherwise appends
 #
 # For best results make a shortcut for python3 <path>/short_alias.py
-# Last modified by Jonah Rubin 6/12/2019
+# Last modified by Jonah Rubin 6/13/2019
 #
-# input: alias, cmd
+# input: "<alias>", "<cmd>"
+#   Overwrites duplicates, otherwise appends
 #
-# issues: selectively hangs on to arg1 between calls (rare)
+# input: "<alias>"
+#   Deletes alias
 ##########################################################
 
 import sys
 import os
+from enum import Enum
+
+class Action(Enum):
+    ADD = 1
+    DELETE = 3
 
 #must use os for hidden file, bash_profile
-def write_to_bash_profile(alias,cmd):
+def edit_bash_profile(alias, cmd, action):
 
     overwrite = False
 
@@ -30,7 +37,13 @@ def write_to_bash_profile(alias,cmd):
             if line.split(" ")[1].split("=")[0] == alias:
                 overwrite = True
                 sys.stdout.write('\nOverwriting previous cmd to: ')
-                line = "alias " + alias + "='" + cmd + "'\n"
+
+                if action == Action.ADD:
+                    line = "alias " + alias + "='" + cmd + "'\n"
+
+                elif action == Action.DELETE:
+                    line = ""
+
                 sys.stdout.write(line + "\n")
 
         to_write.append(line)
@@ -39,19 +52,30 @@ def write_to_bash_profile(alias,cmd):
     if overwrite:
         with open(os.path.expanduser('~/.bash_profile'),'w') as f:
             f.writelines(to_write)
-    else:
+    elif action == action.ADD:
         with open(os.path.expanduser('~/.bash_profile'), 'a+') as f:
             line = "alias " + alias + "='" + cmd + "'"
             f.write("\n" + line)
             sys.stdout.write("updated bash_profile with: " + line + "\n")
+    else:
+        sys.stdout.write("\nAlias: " + alias + " not found\n")
+
 
 
 def _main_():
-    #user defined alias
-    alias = sys.argv[1]
-    cmd = sys.argv[2]
 
-    write_to_bash_profile(alias,cmd)
+    if len(sys.argv) == 2:
+        alias = sys.argv[1]
+        cmd = ""
+        action = Action.DELETE
+
+    elif len(sys.argv) == 3:
+        alias = sys.argv[1]
+        cmd = sys.argv[2]
+        action = Action.ADD
+
+    edit_bash_profile(alias, cmd , action)
 
 
 _main_()
+
