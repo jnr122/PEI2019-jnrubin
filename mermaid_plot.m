@@ -13,6 +13,7 @@ function [data] = mermaid_plot(float_name)
 raw_data = webread(strcat('http://geoweb.princeton.edu/people/simons/SOM/', float_name, '_030.txt'));
 data = strsplit(raw_data, '\n');
 data_points = [];
+clf 
 
 % set up map
 figure(1)
@@ -35,7 +36,7 @@ for i = 1:length(data)-1
    float.time = split_entry(3);  
 
    data_points = [data_points, float];
-   plot_map = plot3(float.lat,float.long, 2600, 'color', [i/length(data) i/length(data) i/length(data)],'marker','.','markersize',15 ) 
+   plot_map = plot3(float.lat,float.long, 2600, 'color', [i/length(data) i/length(data) i/length(data)],'marker','.','markersize', 15); 
    %geoshow(float.loc)
    
 end
