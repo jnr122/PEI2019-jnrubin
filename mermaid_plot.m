@@ -12,7 +12,7 @@ function [data] = mermaid_plot(float_name)
   % pull data
   raw_data = webread(strcat('http://geoweb.princeton.edu/people/simons/SOM/', float_name, '_030.txt')); 
   data = strsplit(raw_data, '\n');
- 
+  regression_size = 8;
   data_points = [];
   surface_entries = [];
   diving_entries = [];
@@ -25,6 +25,7 @@ function [data] = mermaid_plot(float_name)
   ylabel('Longitude');
   hold on;
   grid on;
+  zoom on;
   % make float structs, plot
   for i = 1:length(data)-1
     entry = data(length(data)-i);
@@ -67,13 +68,12 @@ function [data] = mermaid_plot(float_name)
   avg_diving_velocity  = mean([diving_entries.leg_velocity]) 
   avg_surface_dist     = mean([surface_entries.leg_length])
   avg_diving_dist      = mean([diving_entries.leg_length])
-  
 
- % plot_map = plot([data_points.lat], [data_points.long], '.b')
- % p = polyfit([data_points.lat],[data_points.long],3)
- % f = polyval(p,[data_points.lat]);
+  plot_map = plot([data_points(1:regression_size).lat], [data_points(1:regression_size).long], '.b')
+  p = polyfit([data_points(1:regression_size).lat],[data_points(1:regression_size).long],2)
+  f = polyval(p,[data_points(1:regression_size).lat]);
   
- % plot([data_points.lat],f,'--r')
+  plot([data_points(1:regression_size).lat],f,'--r')
 
   % quiver(data_points(length(data_points)).lat, data_points(length(data_points)).long,1,2)
   % quiver(1,2,3,4)			    
@@ -81,4 +81,5 @@ function [data] = mermaid_plot(float_name)
   plot_map(1) = plot(NaN,NaN,'sk', 'markersize', 6);
   plot_map(2) = plot(NaN,NaN,'.k', 'markersize', 15);
   plot_map(3) = plot(NaN,NaN,'*r', 'markersize', 8);
-  legend(plot_map, 'Oldest','Latest','Prediction');
+  plot_map(4) = plot(NaN,NaN,'.b', 'markersize', 12);
+  legend(plot_map, 'Oldest','Latest','Prediction', 'Used for regression');
