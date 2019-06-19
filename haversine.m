@@ -4,7 +4,7 @@ function [d]=haversine(lat1,lon1,lat2,lon2)
   % Computes the great circle distance between two lat/lon pairs
   %
   % Input: lat lon pairs as specified
-  % Ouput: GSD in km
+  % Ouput: GSD in m
   %
   % Last modified by Jonah Rubin 6/18/19
   
@@ -14,6 +14,6 @@ function [d]=haversine(lat1,lon1,lat2,lon2)
   lat2 = deg2rads(lat2);
   a = (sin(dlat./2)).^2 + cos(lat1) .* cos(lat2) .* (sin(dlon./2)).^2;
   c = 2 .* asin(sqrt(a));
-  d = 6372.8 * c; 
+  d = 6372.8 * c * 1000; % convert to m 
 
 end

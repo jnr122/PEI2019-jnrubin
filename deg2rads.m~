@@ -1,0 +1,4 @@
+function rad = deg2rads(degree) 
+% degrees to radians
+    rad = degree .* pi / 180;
+end 

@@ -18,7 +18,7 @@ from enum import Enum
 
 class Action(Enum):
     ADD = 1
-    DELETE = 3
+    DELETE = 2
 
 #must use os for hidden file, bash_profile
 def edit_bash_profile(alias, cmd, action):
@@ -33,22 +33,19 @@ def edit_bash_profile(alias, cmd, action):
     for line in data:
         if line.split(" ")[0] == "alias":
 
-            #if currently selected alias == input alias, overwrite
+            #if currently selected alias == input alias, overwrite or delete
             if line.split(" ")[1].split("=")[0] == alias:
                 overwrite = True
                 sys.stdout.write('\nOverwriting previous cmd to: ')
 
                 if action == Action.ADD:
                     line = "alias " + alias + "='" + cmd + "'\n"
-
                 elif action == Action.DELETE:
                     line = ""
 
                 sys.stdout.write(line + "\n")
-
         to_write.append(line)
 
-    #if alias already contained
     if overwrite:
         with open(os.path.expanduser('~/.bash_profile'),'w') as f:
             f.writelines(to_write)
@@ -64,17 +61,21 @@ def edit_bash_profile(alias, cmd, action):
 
 def _main_():
 
+    # delete
     if len(sys.argv) == 2:
         alias = sys.argv[1]
         cmd = ""
         action = Action.DELETE
 
+    # add/ update
     elif len(sys.argv) == 3:
         alias = sys.argv[1]
         cmd = sys.argv[2]
         action = Action.ADD
 
-    edit_bash_profile(alias, cmd , action)
+    edit_bash_profile(alias, cmd, action)
+    sys.stdout.write("#####remember to source#####\n")
+
 
 
 _main_()
