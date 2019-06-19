@@ -82,26 +82,3 @@ function [data] = mermaid_plot(float_name)
   plot_map(2) = plot(NaN,NaN,'.k', 'markersize', 15);
   plot_map(3) = plot(NaN,NaN,'*r', 'markersize', 8);
   legend(plot_map, 'Oldest','Latest','Prediction');
-  
-  
-  
-
-
-
-	    
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-			 
