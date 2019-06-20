@@ -23,11 +23,11 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   % (times - 1) allows testing on known data
   times = datenum(times(1:length(times-1)))* 24 * 3600;
   
-  %lat_data = plot(times, lats, '+k', 'markersize', 3);
-  %lon_data = plot(times, lons, '*b', 'markersize', 3);
+  lat_data = plot(times, lats, '+k', 'markersize', 3);
+  lon_data = plot(times, lons, '*b', 'markersize', 3);
   
-  %plot_lats = plot(times(length(times)-size:length(times)), lats(length(times)-size:length(times)), '.g');
-  %plot_lons = plot(times(length(times)-size:length(times)), lons(length(times)-size:length(times)), '.g');
+  plot_lats = plot(times(length(times)-size:length(times)), lats(length(times)-size:length(times)), '.g');
+  plot_lons = plot(times(length(times)-size:length(times)), lons(length(times)-size:length(times)), '.g');
   
   lat_p = polyfit(times(length(times)-size:length(times)),lats(length(times)-size:length(times)), degree);
   lon_p = polyfit(times(length(times)-size:length(times)),lons(length(times)-size:length(times)), degree);
@@ -36,9 +36,14 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   lon_f = polyval(lon_p, times(length(times)-size:length(times)));
   
   times = [times times(length(times)) + t];
-    
-  %plot(times(length(times)-size:length(times)),lat_f,'-r');
-  %plot(times(length(times)-size:length(times)),lon_f,'-r');
   
-  lat_predict = lat_f(length(lat_f));
-  lon_predict = lon_f(length(lon_f));
+
+    
+  plot(times(length(times)-size:length(times)),lat_f,'-r');
+  plot(times(length(times)-size:length(times)),lon_f,'-r');
+  
+  %lat_predict = polyval(lat_p, times(length(times)))
+  %lon_predict = polyval(lon_p, times(length(times)))
+  
+  lat_predict = lat_f(length(lat_f))
+  lon_predict = lon_f(length(lon_f))

@@ -76,7 +76,7 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
   % quiver(1,2,3,4)			    
   % make legend
   
-  regression_size = 10;
+  regression_size = 3;
   regression_degree = 2;
   predicton_time = avg_diving_time;
 

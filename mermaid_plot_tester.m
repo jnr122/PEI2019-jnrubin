@@ -8,10 +8,10 @@ function [avg_accuracy] = mermaid_plot_tester()
   %         final position
   %
   % Last modified by Jonah Rubin, 6/20/19
-  
+
   dists = []
   
-  for i=1:25
+  for i=2:25
     if i < 10
         name = ['P00' num2str(i)];
     else
