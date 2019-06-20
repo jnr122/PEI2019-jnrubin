@@ -65,7 +65,7 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
   end
 
   avg_surface_velocity = mean([surface_entries.leg_velocity]);
-  avg_diving_velocity  = mean([diving_entries.leg_velocity]);
+  avg_diving_velocity  = mean([diving_entries.leg_velocity])
   avg_surface_dist     = mean([surface_entries.leg_length]);
   avg_diving_dist      = mean([diving_entries.leg_length]);
   

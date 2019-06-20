@@ -47,3 +47,9 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   
   lat_predict = lat_f(length(lat_f))
   lon_predict = lon_f(length(lon_f))
+
+  plot_map(1) = plot(NaN,NaN,'db', 'markersize', 4);
+  plot_map(2) = plot(NaN,NaN,'+k', 'markersize', 4);
+  plot_map(3) = plot(NaN,NaN,'sg', 'markersize', 3);
+  plot_map(4) = plot(NaN,NaN,'-r', 'markersize', 3); 
+  legend(plot_map, 'Longitude','Latitude','Used for Regression', 'Extended Polyfit');
