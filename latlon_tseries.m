@@ -1,4 +1,4 @@
-function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t, degree)
+function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size ,t, degree)
   % [lat_predict, lon_predict] = LATLON_TSERIES(events)
   %
   % This function plots lat and lon arrays as separate time series
@@ -7,13 +7,13 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   % 
   %
   % Input: lats, lons, times (corresponding lat, lon, and time arrays)
-  %        t (the number of seconds since last report to retrieve prediction)
   %        size (the number of datapoints to use for the regression)
+  %        t (the number of seconds since last report to retrieve prediction)
   %        degree (degree of polynomial regression)
   %
   % Output: lat_predict, lon_predict (predicted lat lon at given time)
   %
-  % Last modified by Jonah Rubin, 6/20/19
+  % Last modified by Jonah Rubin, 6/21/19
   
   figure(2)
   title('Lat Lon Timeseries');
