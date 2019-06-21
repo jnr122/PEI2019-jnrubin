@@ -32,15 +32,19 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
     split_entry = strsplit(entry{1});
    
     float.name = cell2mat(split_entry(1));
-    float.lat  = str2double(split_entry(4));
-  
-    float.lon  = str2double(split_entry(5)); 
+    float.lon  = str2double(split_entry(4)); 
+    float.lat  = str2double(split_entry(5));
     float.loc  = geopoint(str2double(split_entry(4)), str2double(split_entry(5)));
     date = char(split_entry(2));
     time = char(split_entry(3));  
     date_time = [date, ' ',time];
     float.date_time = datetime(date_time);
-
+    
+    if i == length(data)-1
+        color = [0.0 0.6 0.6];
+    else 
+        color = [(1-i/length(data)), (1-i/length(data)), (1-i/length(data))];
+    end
     if i == 1
       float.leg_length = 0;
       float.leg_time = 0;
@@ -53,10 +57,10 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
 	  float.leg_acceleration = (float.leg_velocity - data_points(i-1).leg_velocity)/float.leg_time;
       if float.leg_time > 20000
 		diving_entries = [diving_entries float];
-	    plot_map = plot(float.lat,float.lon, 'color', [(1-i/length(data)) (1-i/length(data)) (1-i/length(data))],'marker','.','markersize', 15);
+	    plot_map = plot(float.lat,float.lon, 'color', color,'marker','.','markersize', 15);
       else 
 	    surface_entries = [surface_entries float];
-	    plot_map = plot(float.lat,float.lon, 'color', [(1-i/length(data)) (1-i/length(data)) (1-i/length(data))],'marker','.','markersize', 15);
+	    plot_map = plot(float.lat,float.lon, 'color', color,'marker','.','markersize', 15);
       end
     end
     
@@ -69,22 +73,23 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
   avg_surface_dist     = mean([surface_entries.leg_length]);
   avg_diving_dist      = mean([diving_entries.leg_length]);
   
-  avg_surface_time = avg_surface_dist / avg_surface_velocity
-  avg_diving_time = avg_diving_dist / avg_diving_velocity
+  avg_surface_time = avg_surface_dist / avg_surface_velocity;
+  avg_diving_time = avg_diving_dist / avg_diving_velocity;
 
   % quiver(data_points(length(data_points)).lat, data_points(length(data_points)).lon,1,2)
   % quiver(1,2,3,4)			    
   % make legend
   
-  regression_size = 3;
-  regression_degree = 2;
+  regression_size = 2;
+  regression_degree = 1;
   predicton_time = avg_diving_time;
+  %only use average of regression size
+  % [lat_predict, lon_predict] = latlon_tseries([data_points.lat], [data_points.lon], [data_points.date_time], regression_size, predicton_time, regression_degree);
+  [lat_predict, lon_predict] = latlon_tseries([diving_entries.lat], [diving_entries.lon], [diving_entries.date_time], regression_size, predicton_time, regression_degree);
 
-  [lat_predict, lon_predict] = latlon_tseries([data_points.lat], [data_points.lon], [data_points.date_time], regression_size, predicton_time, regression_degree)
-  lat_actual = data_points(length(data_points)).lat
-  lon_actual = data_points(length(data_points)).lon
+  lat_actual = data_points(length(data_points)).lat;
+  lon_actual = data_points(length(data_points)).lon;
   
-  figure(1)
   predict = plot(lat_predict,lon_predict,'*r', 'markersize', 8);
 
   plot_map(1) = plot(NaN,NaN,'sk', 'markersize', 6);
