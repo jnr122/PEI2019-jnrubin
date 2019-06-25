@@ -1,4 +1,4 @@
-function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_plot(float_name)
+function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_plot(float_name, regression_size, regression_degree)
   % [data] = MERMAID_PLOT(float_name)
   %
   % This function recieves the name of a float and plots its last
@@ -11,17 +11,20 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   % Output: lat_predict, lon_predict, lat_actual, lon_actual (actual lat lon vs predicted)
   %         distance between actual and predicted coords (m)
   %
-  % Last modified by Jonah Rubin, 6/21/19
+  % Last modified by Jonah Rubin, 6/25/19
 
   % pull data
   raw_data = webread(strcat('http://geoweb.princeton.edu/people/simons/SOM/', float_name, '_030.txt')); 
   data = (strsplit(raw_data, '\n'));
   
+  defval('regression_size', 2)  
+  defval('regression_degree', 1)  
+
   data_points = [];
   surface_entries = [];
   diving_entries = [];
   clf;
-			    
+
   % set up map
   figure(1);
   title(strcat(float_name, ': last 30 locations'));
@@ -58,13 +61,13 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
       float.leg_length = haversine(data_points(i-1).lat, data_points(i-1).lon, float.lat, float.lon);    
       float.leg_time = abs(datenum(float.date_time - data_points(i-1).date_time) * 24 * 3600); % convert to seconds;
       float.leg_velocity = float.leg_length/float.leg_time;
-	  float.leg_acceleration = (float.leg_velocity - data_points(i-1).leg_velocity)/float.leg_time;
+      float.leg_acceleration = (float.leg_velocity - data_points(i-1).leg_velocity)/float.leg_time;
       if float.leg_time > 20000
-		diving_entries = [diving_entries float];
-	    plot_map = plot(float.lat,float.lon, 'color', marker_color,'marker','.','markersize', 15);
+        diving_entries = [diving_entries float];
+	plot_map = plot(float.lat,float.lon, 'color', marker_color,'marker','.','markersize', 15);
       else 
-	    surface_entries = [surface_entries float];
-	    plot_map = plot(float.lat,float.lon, 'color', marker_color,'marker','.','markersize', 15);
+	surface_entries = [surface_entries float];
+	plot_map = plot(float.lat,float.lon, 'color', marker_color,'marker','.','markersize', 15);
       end
     end
     
@@ -72,9 +75,6 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   
   end
 
-  regression_size = 2;
-  regression_degree = 1;
-    
   avg_surface_velocity = mean([surface_entries(length(surface_entries)-regression_size:(length(surface_entries))).leg_velocity]);
   avg_diving_velocity  = mean([diving_entries(length(diving_entries)-regression_size:(length(diving_entries))).leg_velocity])
   avg_surface_dist     = mean([surface_entries(length(surface_entries)-regression_size:(length(surface_entries))).leg_length]);
@@ -99,4 +99,4 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   plot_map(5) = plot(NaN,NaN,'.', 'color', [0.0 0.6 0.6], 'markersize', 10);
   legend(plot_map, 'Oldest','Latest','Predicted Trajectory', 'Predicted Surface at t', 'Actual Next Surface');
   
-  accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual)
+accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual);
