@@ -1,4 +1,4 @@
-function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float_name)
+function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_plot(float_name)
   % [data] = MERMAID_PLOT(float_name)
   %
   % This function recieves the name of a float and plots its last
@@ -8,7 +8,8 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
   % average time between dives of the recent events
   %
   % Input: float_name (the id of the float)
-  % Output: data (the location data of the float)
+  % Output: lat_predict, lon_predict, lat_actual, lon_actual (actual lat lon vs predicted)
+  %         distance between actual and predicted coords (m)
   %
   % Last modified by Jonah Rubin, 6/21/19
 
@@ -97,3 +98,5 @@ function [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(float
   plot_map(4) = plot(NaN,NaN,'*r', 'markersize', 8);
   plot_map(5) = plot(NaN,NaN,'.', 'color', [0.0 0.6 0.6], 'markersize', 10);
   legend(plot_map, 'Oldest','Latest','Predicted Trajectory', 'Predicted Surface at t', 'Actual Next Surface');
+  
+  accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual)
