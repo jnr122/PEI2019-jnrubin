@@ -41,10 +41,9 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
     float.name = cell2mat(split_entry(1));
     float.lon  = str2double(split_entry(4)); 
     float.lat  = str2double(split_entry(5));
-    float.loc  = geopoint(str2double(split_entry(4)), str2double(split_entry(5)));
     date = char(split_entry(2));
-    time = char(split_entry(3));  
-    date_time = [date, ' ',time];
+    time = char(split_entry(3));
+    date_time = [date ' ' time];
     float.date_time = datetime(date_time);
     
     if i == length(data)-1
@@ -81,7 +80,7 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   avg_diving_dist      = mean([diving_entries(length(diving_entries)-regression_size:(length(diving_entries))).leg_length]);
   
   avg_surface_time = avg_surface_dist / avg_surface_velocity;
-  avg_diving_time = avg_diving_dist / avg_diving_velocity;
+    date_time = [date, ' ',time];  avg_diving_time = avg_diving_dist / avg_diving_velocity;
   
   predicton_time = avg_diving_time;
   

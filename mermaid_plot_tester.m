@@ -10,24 +10,28 @@ function [avg_accuracy] = mermaid_plot_tester()
   % Last modified by Jonah Rubin, 6/20/19
 
   dists = []
-  
-  for i=2:25
+  names = []  
+  for i=1:25
     if i < 10
-        name = ['P00' num2str(i)];
+	  name = ['P00' num2str(i)];
     else
-        name = ['P0' num2str(i)];
+      name = ['P0' num2str(i)];
     end
     
     try
         [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(name);
-         accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual);
+         accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual)
          if isnan(accuracy)
          else
              dists = [dists accuracy]
+	     names = [names i]
          end
     catch
     end
     
   end
   
-  avg_accuracy = mean(dists)
+  figure(3)
+	     %  x = length(names)
+  avg_accuracy = mean(dists);
+  accuracy_hist = histogram(dists, length(names))
