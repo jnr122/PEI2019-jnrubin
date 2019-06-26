@@ -1,4 +1,4 @@
-function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size ,t, degree)
+function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t, degree)
   % [lat_predict, lon_predict] = LATLON_TSERIES(events)
   %
   % This function plots lat and lon arrays as separate time series
@@ -13,7 +13,7 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size ,t,
   %
   % Output: lat_predict, lon_predict (predicted lat lon at given time)
   %
-  % Last modified by Jonah Rubin, 6/21/19
+  % Last modified by Jonah Rubin, 6/26/19
   
   figure(2)
   title('Lat Lon Timeseries');
@@ -35,9 +35,12 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size ,t,
   lon_data = plot(times, lons, '*b', 'markersize', 3);
   
   % polyfit to scaled arrays
+  %[lat_p, lat_S, lat_MU] = polyfit(times,lats, degree)
+  %[lon_p, lon_S, lon_MU] = polyfit(times,lons, degree);
+ 
   lat_p = polyfit(times,lats, degree);
   lon_p = polyfit(times,lons, degree);
- 
+  
   % make polyval arrays
   lat_f = polyval(lat_p, times);
   lon_f = polyval(lon_p, times);
