@@ -18,8 +18,8 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   data = (strsplit(raw_data, '\n'));
   
   defval('regression_size', 2)  
-  defval('regression_degree', 1)  
-
+  defval('regression_degree', 1)
+    
   data_points = [];
   surface_entries = [];
   diving_entries = [];
@@ -76,7 +76,7 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   end
 
   avg_surface_velocity = mean([surface_entries(length(surface_entries)-regression_size:(length(surface_entries))).leg_velocity]);
-  avg_diving_velocity  = mean([diving_entries(length(diving_entries)-regression_size:(length(diving_entries))).leg_velocity])
+  avg_diving_velocity  = mean([diving_entries(length(diving_entries)-regression_size:(length(diving_entries))).leg_velocity]);
   avg_surface_dist     = mean([surface_entries(length(surface_entries)-regression_size:(length(surface_entries))).leg_length]);
   avg_diving_dist      = mean([diving_entries(length(diving_entries)-regression_size:(length(diving_entries))).leg_length]);
   
@@ -99,4 +99,4 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   plot_map(5) = plot(NaN,NaN,'.', 'color', [0.0 0.6 0.6], 'markersize', 10);
   legend(plot_map, 'Oldest','Latest','Predicted Trajectory', 'Predicted Surface at t', 'Actual Next Surface');
   
-accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual);
+accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual)
