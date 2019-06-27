@@ -11,7 +11,6 @@ function [avg_accuracy] = mermaid_plot_tester()
 
   dists = [];
   names = [];
-  threshold = 20;
   for i=1:25
     if i < 10
 	  name = ['P00' num2str(i)];
@@ -34,19 +33,14 @@ function [avg_accuracy] = mermaid_plot_tester()
   
   figure(3)
   hold on;
-  dist_mean = mean(dists);
-  dist_var = var(dists);
+  dist_mean = mean(dists)
+  dist_var = var(dists)
 
   %accuracy_hist = histogram(dists, length(names)+5);
   accuracy_hist = cdfplot(dists);
   
-  threshold_line = plot([threshold threshold], ylim);
+  threshold = plot([20 16], ylim, 'Threshold')
   
-  leg(1) = plot(NaN,NaN,'-r', 'markersize', 15);
-
   title('Accuracy CDF');
-  xlabel('Distance (km)');
-  ylabel('Fraction of occurences');
-  legend(leg, strcat(num2str(threshold), ' km threshold'));
-
-
+  xlabel('Distance km');
+  ylabel('% of occurences');

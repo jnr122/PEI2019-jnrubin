@@ -71,8 +71,8 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   
   end
   
-  defval('regression_size', 2)  
-  defval('regression_degree', 1)
+  defval('regression_size', 25)  
+  defval('regression_degree', 10)
 
   avg_surface_velocity = mean([surface_entries(length(surface_entries)-regression_size:(length(surface_entries))).leg_velocity]);
   avg_diving_velocity  = mean([diving_entries(length(diving_entries)-regression_size:(length(diving_entries))).leg_velocity]);
@@ -85,10 +85,10 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   predicton_time = avg_diving_time;
   
   % only use diving entries
-  [lat_predict, lon_predict] = latlon_tseries([diving_entries.lat], [diving_entries.lon], [diving_entries.date_time], regression_size, predicton_time, regression_degree);
+  %[lat_predict, lon_predict] = latlon_tseries([diving_entries.lat], [diving_entries.lon], [diving_entries.date_time], regression_size, predicton_time, regression_degree);
  
   % use all entries
-  %[lat_predict, lon_predict] = latlon_tseries([data_points.lat], [data_points.lon], [data_points.date_time], regression_size, predicton_time, regression_degree);
+  [lat_predict, lon_predict] = latlon_tseries([data_po.lat], [diving_entries.lon], [diving_entries.date_time], regression_size, predicton_time, regression_degree);
 
   lat_actual = data_points(length(data_points)).lat;
   lon_actual = data_points(length(data_points)).lon;
