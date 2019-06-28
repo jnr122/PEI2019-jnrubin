@@ -68,6 +68,9 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
   plot(lat_predicts, lon_predicts, '*r', 'markersize', 8);
   text(lat_predicts, lon_predicts, names);
   plot(lat_ships, lon_ships, '-k', 'marker', 's','markersize', 8);
+  leg4(1) = plot(NaN,NaN,'-sk', 'markersize', 8);
+  leg4(2) = plot(NaN,NaN,'*r', 'markersize', 8);
+  legend(leg4, 'Float Deployments', 'Float Predictions');
 
 
 
