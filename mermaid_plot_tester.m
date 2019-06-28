@@ -1,4 +1,4 @@
-function [avg_accuracy] = mermaid_plot_tester(prediction_time)
+function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, regression_degree)
   % [avg_accuracy] = MERMAID_PLOT_TESTER()
   %
   % This function tests the accuracy of the mermaid_plot function
@@ -9,6 +9,10 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time)
   %         final position
   %
   % Last modified by Jonah Rubin, 6/28/19
+  
+  defval('prediction_time', 604800);
+  defval('regression_size', 2);
+  defval('regression_degree', 1);
 
   dists = [];
   names = {};
@@ -26,7 +30,7 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time)
     end
     
     try
-        [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(name, prediction_time/2);
+        [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(name, prediction_time, regression_size, regression_degree);
          accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual);
          if isnan(accuracy)
          else

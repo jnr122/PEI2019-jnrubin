@@ -25,10 +25,10 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   % (array - n) allows testing on known data
   % scale arrays to only use alotted size
   backtest_num = 1;
-  times = times(length(times)-size:(length(times)-backtest_num));
+  times = times(length(times)-(size+backtest_num):(length(times)-backtest_num));
   times = datenum(times) * 24 * 3600;
-  lons = lons(length(lons)-size:(length(lons)-backtest_num));
-  lats = lats(length(lats)-size:(length(lats)-backtest_num));
+  lons = lons(length(lons)-(size+backtest_num):(length(lons)-backtest_num));
+  lats = lats(length(lats)-(size+backtest_num):(length(lats)-backtest_num));
 
   lat_data = plot(times, lats, '+k', 'markersize', 3);
   lon_data = plot(times, lons, '*b', 'markersize', 3);
@@ -43,6 +43,9 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   % make polyval arrays
   lat_f = polyval(lat_p, times);
   lon_f = polyval(lon_p, times);
+  
+  % scale to correct for bias
+  t = t/10;
 
   % add point in time for approximation
   times = [times times(length(times)) + t];

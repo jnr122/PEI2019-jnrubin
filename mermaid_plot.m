@@ -74,7 +74,6 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
     data_points = [data_points, float];
   
   end
-  data_points = diving_entries;
   plot_map = plot(diving_entries(length(diving_entries)).lon,diving_entries(length(diving_entries)).lat, 'color', [0.0 0.6 0.6],'marker','.','markersize', 15);
 
   defval('regression_size', 2)  
@@ -88,7 +87,7 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   avg_surface_time = avg_surface_dist / avg_surface_velocity;
   avg_diving_time = avg_diving_dist / avg_diving_velocity;
   
-  defval('prediction_time', avg_diving_time/2);
+  defval('prediction_time', (avg_diving_time/10));
   
   
   % only use diving entries
@@ -97,8 +96,8 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   % use all entries
   %[lat_predict, lon_predict] = latlon_tseries([data_points.lat], [data_points.lon], [data_points.date_time], regression_size, predicton_time, regression_degree);
 
-  lat_actual = data_points(length(data_points)).lat;
-  lon_actual = data_points(length(data_points)).lon;
+  lat_actual = diving_entries(length(diving_entries)).lat;
+  lon_actual = diving_entries(length(diving_entries)).lon;
   
   predict = plot(lon_predict,lat_predict,'*r', 'markersize', 8);
 
