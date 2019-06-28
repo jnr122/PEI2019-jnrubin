@@ -71,9 +71,9 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
   title('Predicted Surfacings and Ship Trajectory');
   xlabel('latitude');
   ylabel('longitude');
-  plot(lat_predicts, lon_predicts, '*r', 'markersize', 8);
-  text(lat_predicts, lon_predicts, names);
-  plot(lat_ships, lon_ships, '-k', 'marker', 's','markersize', 8);
+  plot(lon_predicts, lat_predicts, '*r', 'markersize', 8);
+  text(lon_predicts, lat_predicts, names);
+  plot(lon_ships, lat_ships, '-k', 'marker', 's','markersize', 8);
   leg4(1) = plot(NaN,NaN,'-sk', 'markersize', 8);
   leg4(2) = plot(NaN,NaN,'*r', 'markersize', 8);
   legend(leg4, 'Float Deployments', 'Float Predictions');
