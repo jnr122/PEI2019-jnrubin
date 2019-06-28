@@ -21,13 +21,12 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   ylabel('displacement (degrees)');
   hold on;
   grid on;
-  
+
   % (array - n) allows testing on known data
   % scale arrays to only use alotted size
   backtest_num = 1;
   times = times(length(times)-size:(length(times)-backtest_num));
   times = datenum(times) * 24 * 3600;
-  
   lons = lons(length(lons)-size:(length(lons)-backtest_num));
   lats = lats(length(lats)-size:(length(lats)-backtest_num));
 
@@ -52,6 +51,9 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   lat_f = [lat_f polyval(lat_p, times(length(times)) + t)];
   lon_f = [lon_f polyval(lon_p, times(length(times)) + t)];
   
+  if lon_f > 0
+      lon_f = lon_f - 360;
+  end
   % graph polyfits
   plot(times,lat_f,'-r');
   plot(times,lon_f,'-r')
@@ -65,5 +67,5 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   legend('Longitude','Latitude','Extended Polyfit');
   
   figure(1)
-  plot(lat_f,lon_f,'--r', 'LineWidth', 2);
+  plot(lon_f,lat_f,'--r', 'LineWidth', 2);
 

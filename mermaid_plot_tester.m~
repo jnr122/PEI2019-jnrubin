@@ -1,16 +1,23 @@
-function [avg_accuracy] = mermaid_plot_tester()
+function [avg_accuracy] = mermaid_plot_tester(prediction_time)
   % [avg_accuracy] = MERMAID_PLOT_TESTER()
   %
   % This function tests the accuracy of the mermaid_plot function
   %
-  % Input: none
+  % Input: prediction_time (the number of time in hours in the future for
+  %                         prediction, default is 168 (1 week)
   % Output: average distance in m from actual final position to predicted
   %         final position
   %
-  % Last modified by Jonah Rubin, 6/20/19
+  % Last modified by Jonah Rubin, 6/28/19
 
   dists = [];
-  names = [];
+  names = {};
+  lat_ships = [-17.3,-12.0,-10.0,-8.0,-6.0,-5.0,-6.0,-8.0,-13.0,-17.0,-22.0,-27.0,-28.0,-29.0,-30.0,-31.0,-30.0,-29.0,-28.0,-27.0,-26.0,-25.65,-25.63,-25.0,-24.0,-22.2];
+  lon_ships = [-149.3,-151.0,-150.0,-149.0,-148.0,-146.0,-144.0,-139.0,-135.0,-136.0,-141.0,-149.0,-151.0,-154.0,-157.0,-160.0,-164.0,-166.0,-168.0,-170.0,-172.0,-174.9,-177.6,-179.0,-180.0,-193.7];
+  lat_predicts = [];
+  lon_predicts = []; 
+  numfloats = 25;
+  threshold = 11;
   for i=1:25
     if i < 10
 	  name = ['P00' num2str(i)];
@@ -19,12 +26,14 @@ function [avg_accuracy] = mermaid_plot_tester()
     end
     
     try
-        [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(name);
+        [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(name, prediction_time);
          accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual)
          if isnan(accuracy)
          else
-             dists = [dists accuracy/1000]
-	         names = [names i]
+             dists = [dists accuracy/1000];
+	         names{end+1} = num2str(i);
+             lat_predicts = [lat_predicts lat_predict];
+             lon_predicts = [lon_predicts lon_predict];
          end
     catch
     end
@@ -33,14 +42,28 @@ function [avg_accuracy] = mermaid_plot_tester()
   
   figure(3)
   hold on;
-  dist_mean = mean(dists)
-  dist_var = var(dists)
+  dist_mean = mean(dists);
+  dist_var = var(dists);
 
-  %accuracy_hist = histogram(dists, length(names)+5);
   accuracy_hist = cdfplot(dists);
+  threshold_line = plot([threshold threshold], ylim);
   
-  threshold = plot([20 16], ylim, 'Threshold')
-  
+
   title('Accuracy CDF');
-  xlabel('Distance km');
-  ylabel('% of occurences');
+  xlabel('Distance (km)');
+  ylabel('Fraction of occurences');
+  leg(1) = plot(NaN,NaN,'-r', 'markersize', 15);
+  legend(leg, strcat(num2str(threshold), ' km threshold'));
+  
+  figure(4)
+  grid on;
+  hold on;
+  title('Predicted Surfacings and Ship Trajectory');
+  xlabel('latitude');
+  ylabel('longitude');
+  plot(lat_predicts, lon_predicts, '*r', 'markersize', 8);
+  text(lat_predicts, lon_predicts, names);
+  plot(lat_ships, lon_ships, '-k', 'marker', 's','markersize', 8);
+
+
+
