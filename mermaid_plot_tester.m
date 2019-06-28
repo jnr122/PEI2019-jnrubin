@@ -5,8 +5,13 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
   %
   % Input: prediction_time (the number of time in seconds in the future for
   %                         prediction, default is 604800 (1 week)
+  %        regression_size (number of points to use for regression)
+  %        regression_degree (degree for polyfit
+  %
   % Output: average distance in m from actual final position to predicted
   %         final position
+  %
+  % With default parameters: # predictions within 10km = 50^(1/# weeks in advance) 
   %
   % Last modified by Jonah Rubin, 6/28/19
   
