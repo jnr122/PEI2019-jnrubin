@@ -57,7 +57,6 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
 
   accuracy_hist = cdfplot(dists);
   threshold_line = plot([threshold threshold], ylim);
-  
 
   title('Accuracy CDF');
   xlabel('Distance (km)');
@@ -68,7 +67,12 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
   figure(4)
   grid on;
   hold on;
-  title('Predicted Surfacings and Ship Trajectory');
+  
+  prediction_date = datetime('now', 'InputFormat', 'HH:mm:ss' );
+  prediction_date.Format = 'eeee, MMMM d, yyyy HH:mm:ss';
+  prediction_date = datestr(prediction_date + seconds(prediction_time));
+  
+  title(['Predicted Surfacings and Ship Trajectory for ' prediction_date]);
   xlabel('latitude');
   ylabel('longitude');
   plot(lon_predicts, lat_predicts, '*r', 'markersize', 8);
