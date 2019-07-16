@@ -46,6 +46,7 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
              lon_predicts = [lon_predicts lon_predict];
          end
     catch
+        fprintf('Failed on %s\n',num2str(i))
     end
     
   end

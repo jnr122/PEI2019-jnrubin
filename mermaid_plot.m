@@ -18,7 +18,12 @@ function [lat_predict, lon_predict, lat_actual, lon_actual, accuracy] = mermaid_
   % Last modified by Jonah Rubin, 6/28/19
 
   % pull data
-  raw_data = webread(strcat('http://geoweb.princeton.edu/people/simons/SOM/', float_name, '_030.txt')); 
+  try
+    raw_data = webread(strcat('http://geoweb.princeton.edu/people/simons/SOM/', float_name, '_030.txt')); 
+  catch
+    fprintf('Could not read data for  %s\n', float_name) 
+    return
+  end
   data = (strsplit(raw_data, '\n'));
     
   data_points = [];
