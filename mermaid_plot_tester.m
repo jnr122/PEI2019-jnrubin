@@ -29,6 +29,8 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
   numfloats = 25;
   threshold = 10;
   for i=1:25
+  %for i=[16,17,23,24]
+
     if i < 10
 	  name = ['P00' num2str(i)];
     else
@@ -38,12 +40,15 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
     try
         [lat_predict, lon_predict, lat_actual, lon_actual] = mermaid_plot(name, prediction_time, regression_size, regression_degree);
          accuracy = haversine(lat_predict, lon_predict, lat_actual, lon_actual);
-         if isnan(accuracy)
+         if isnan(accuracy) | (name == 'P003')
          else
              dists = [dists accuracy/1000];
 	         names{end+1} = num2str(i);
              lat_predicts = [lat_predicts lat_predict];
              lon_predicts = [lon_predicts lon_predict];
+%              n = name
+%              la = lat_predict
+%              lo = lon_predict
          end
     catch
         fprintf('Failed on %s\n',num2str(i))
@@ -74,8 +79,8 @@ function [avg_accuracy] = mermaid_plot_tester(prediction_time, regression_size, 
   prediction_date = datestr(prediction_date + seconds(prediction_time));
   
   title(['Predicted Surfacings and Ship Trajectory for ' prediction_date]);
-  xlabel('latitude');
-  ylabel('longitude');
+  xlabel('longitude');
+  ylabel('latitude');
   plot(lon_predicts, lat_predicts, '*r', 'markersize', 8);
   text(lon_predicts, lat_predicts, names);
   plot(lon_ships, lat_ships, '-k', 'marker', 's','markersize', 8);

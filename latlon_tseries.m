@@ -1,4 +1,4 @@
-function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t, degree)
+function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t, degree, backtest_num)
   % [lat_predict, lon_predict] = LATLON_TSERIES(events)
   %
   % This function plots lat and lon arrays as separate time series
@@ -12,8 +12,8 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   %        degree (degree of polynomial regression)
   %
   % Output: lat_predict, lon_predict (predicted lat lon at given time)
-  %
-  % Last modified by Jonah Rubin, 6/26/19
+  %         
+  % Last modified by Jonah Rubin, 7/19/19
   
   figure(2)
   title('Lat Lon Timeseries');
@@ -24,8 +24,9 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
 
   % (array - n) allows testing on known data
   % scale arrays to only use alotted size
-  backtest_num = 1;
   times = times(length(times)-(size+backtest_num):(length(times)-backtest_num));
+  
+
   times = datenum(times) * 24 * 3600;
   lons = lons(length(lons)-(size+backtest_num):(length(lons)-backtest_num));
   lats = lats(length(lats)-(size+backtest_num):(length(lats)-backtest_num));
@@ -39,7 +40,6 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
  
   lat_p = polyfit(times,lats, degree);
   lon_p = polyfit(times,lons, degree);
- 
 
   % make polyval arrays
   lat_f = polyval(lat_p, times);
@@ -47,9 +47,10 @@ function [lat_predict, lon_predict] = latlon_tseries(lats, lons, times, size, t,
   
   % scale to correct for bias
   t = t/5;
-
+  
   % add point in time for approximation
   times = [times times(length(times)) + t];
+  
   
   % run approximation time through the poly fit
   lat_f = [lat_f polyval(lat_p, times(length(times)) + t)];
